@@ -3,3 +3,6 @@ env
 
 # VSCode configuration
 .vscode
+
+# Python module cache
+__pycache__
