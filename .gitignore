@@ -6,3 +6,6 @@ env
 
 # Python module cache
 __pycache__
+
+# Pytest cache
+.pytest_cache

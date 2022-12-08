@@ -1,5 +1,3 @@
-import ssl
-
 import pandas as pd
 
 
@@ -18,7 +16,5 @@ class CollectorEngine:
                 DataFrame with historical
                 data on soccer matches
         """
-
-        ssl._create_default_https_context = ssl._create_unverified_context
 
         return pd.read_csv(self.origin_database_url)
