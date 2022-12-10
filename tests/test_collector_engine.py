@@ -1,6 +1,9 @@
 import configparser
+import os
 import sys
 from urllib.error import URLError
+from dotenv import load_dotenv
+from pymongo import MongoClient
 
 import pytest
 
@@ -30,3 +33,17 @@ def test_get_data_ssl_error(config: configparser.ConfigParser):
 
     with pytest.raises(URLError):
         collector_engine.get_data()
+
+
+def test_get_target_database(config: configparser.ConfigParser):
+    load_dotenv()
+
+    collector_engine = CollectorEngine(
+        config["FIVETHIRTYEIGHT"]["database_url"],
+        os.environ.get("mongodb_connection"),
+        os.environ.get("mongodb_raw_cluster")
+    )
+
+    mongodb_client = collector_engine.get_target_database()
+
+    assert isinstance(mongodb_client.client, MongoClient)

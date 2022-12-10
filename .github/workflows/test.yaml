@@ -1,5 +1,11 @@
 name: Project linting and testing
 
+env:
+  mongodb_username: ${{ secrets.MONGODB_USERNAME }}
+  mongodb_password: ${{ secrets.MONGODB_PASSWORD }}
+  mongodb_connection: ${{ secrets.MONGODB_CONNECTION }}
+  mongodb_raw_cluster: ${{ secrets.MONGODB_RAW_CLUSTER }}
+
 on:
   push:
     branches:
