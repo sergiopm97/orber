@@ -1,6 +1,6 @@
 import configparser
-from urllib.error import URLError
 import sys
+from urllib.error import URLError
 
 import pytest
 
@@ -19,8 +19,13 @@ def config() -> configparser.ConfigParser():
     reason="The error is only raised on Mac OS X machines"
 )
 def test_get_data_ssl_error(config: configparser.ConfigParser):
+    fake_target_database_url = str()
+    fake_target_database_cluster = str()
+
     collector_engine = CollectorEngine(
-        config["FIVETHIRTYEIGHT"]["database_url"]
+        config["FIVETHIRTYEIGHT"]["database_url"],
+        fake_target_database_url,
+        fake_target_database_cluster
     )
 
     with pytest.raises(URLError):
