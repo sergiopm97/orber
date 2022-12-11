@@ -1,3 +1,4 @@
+import ast
 import configparser
 import os
 import ssl
@@ -27,3 +28,23 @@ if __name__ == "__main__":
     soccer_matches_df = collector_engine.get_data()
 
     mongodb_client = collector_engine.get_target_database()
+
+    filtered_soccer_matches_df = collector_engine.filter_data(
+        soccer_matches_df,
+        config["SEASON_FILTER"]["season_column"],
+        int(config["SEASON_FILTER"]["initial_season"]),
+        int(config["SEASON_FILTER"]["final_season"])
+    )
+
+    match_features = ast.literal_eval(
+        config["RAW_FEATURES_TARGETS"]["raw_features"]
+    )
+
+    match_targets = ast.literal_eval(
+        config["RAW_FEATURES_TARGETS"]["raw_targets"]
+    )
+
+    modeled_soccer_matches = collector_engine.model_matches_data(
+        filtered_soccer_matches_df,
+        match_features + match_targets
+    )
