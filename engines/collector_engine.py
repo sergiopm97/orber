@@ -1,7 +1,9 @@
-from typing import List
+from typing import Callable, Dict, List
 
 import pandas as pd
 from pymongo import MongoClient
+from pymongo.collection import Collection
+from pymongo.results import InsertOneResult
 
 from models.raw_soccer_match import RawSoccerMatch
 
@@ -64,7 +66,12 @@ class CollectorEngine:
                 for the target cluster of the collector
         """
 
-        mongodb_client = MongoClient(self.target_database_url)
+        mongodb_client = MongoClient(
+            self.target_database_url,
+            tls=True,
+            tlsAllowInvalidCertificates=True
+        )
+
         return mongodb_client[self.target_database_cluster]
 
     @staticmethod
@@ -104,3 +111,30 @@ class CollectorEngine:
             modeled_soccer_matches.append(modeled_soccer_match)
 
         return modeled_soccer_matches
+
+    def move_soccer_match(
+        self,
+        mongodb_collection: Collection,
+        soccer_match: RawSoccerMatch
+    ) -> Callable[[Dict[str, any]], InsertOneResult]:
+        """
+        Insert data from a soccer
+        match into MongoDB collection
+
+        Args:
+            collection (MongoClient):
+                MongoDB collection in which
+                the match is to be saved
+
+            soccer_match (RawSoccerMatch):
+                Data of the soccer match to be
+                inserted in the provided collection
+
+        Returns:
+            Callable[[Dict[str, any]], InsertOneResult]:
+                Insertion of party data into the collection accepting
+                the data in dictionary form and returning
+                a default result from MongoDB
+        """
+
+        return mongodb_collection.insert_one(soccer_match.dict())

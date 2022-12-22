@@ -48,3 +48,10 @@ if __name__ == "__main__":
         filtered_soccer_matches_df,
         match_features + match_targets
     )
+
+    raw_data_collection = mongodb_client["raw_data_collection"]
+
+    for modeled_soccer_match in modeled_soccer_matches:
+        collector_engine.move_soccer_match(
+            raw_data_collection, modeled_soccer_match
+        )

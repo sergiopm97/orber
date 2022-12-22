@@ -1,9 +1,8 @@
 from pydantic import BaseModel
-from datetime import date
 
 
 class RawSoccerMatch(BaseModel):
-    date: date
+    date: str
     season: int
     league: str
     team1: str
