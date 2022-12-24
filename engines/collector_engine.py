@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Callable, Dict, List
 
 import pandas as pd
@@ -104,6 +105,11 @@ class CollectorEngine:
             orient="records"
         )
 
+        for soccer_match in matches_features_targes_dict:
+            soccer_match["date"] = datetime.strptime(
+                soccer_match["date"], "%Y-%m-%d"
+            )
+
         modeled_soccer_matches = list()
 
         for soccer_match in matches_features_targes_dict:
@@ -132,7 +138,7 @@ class CollectorEngine:
 
         Returns:
             Callable[[Dict[str, any]], InsertOneResult]:
-                Insertion of party data into the collection accepting
+                Insertion of match data into the collection accepting
                 the data in dictionary form and returning
                 a default result from MongoDB
         """

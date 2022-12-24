@@ -49,6 +49,9 @@ if __name__ == "__main__":
         match_features + match_targets
     )
 
+    if mongodb_client["raw_data_collection"] is not None:
+        mongodb_client["raw_data_collection"].drop()
+
     raw_data_collection = mongodb_client["raw_data_collection"]
 
     for modeled_soccer_match in modeled_soccer_matches:
