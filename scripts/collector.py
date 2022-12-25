@@ -8,31 +8,33 @@ import sys
 from dotenv import load_dotenv
 
 from engines.collector_engine import CollectorEngine
+from utils.logger import Logger
 
 
 if __name__ == "__main__":
 
-    stream_handler = logging.StreamHandler(sys.stdout)
+    logger_name = "Collector engine"
 
     logging_format = logging.Formatter(
         "[%(asctime)s] - %(levelname)s - %(message)s"
     )
 
-    stream_handler.setFormatter(logging_format)
+    logging_level = logging.INFO
 
-    logger = logging.getLogger(__name__)
-    logger.addHandler(stream_handler)
-    logger.setLevel(logging.INFO)
+    logger = Logger(logger_name, logging_format, logging_level)
+    collector_logger = logger.create_logger()
 
     config = configparser.ConfigParser()
     config.read("config/config.ini")
 
     load_dotenv()
 
-    logger.info("Starting collector engine")
+    collector_logger.info(f"{logger.logger_name} starting")
 
     if sys.platform == "darwin":
-        logger.info("Darwin platform detected -> HTTP context to be created")
+        collector_logger.info(
+            "Darwin platform detected -> HTTP context to be created"
+        )
         ssl._create_default_https_context = ssl._create_unverified_context
 
     collector_engine = CollectorEngine(
@@ -41,13 +43,13 @@ if __name__ == "__main__":
         os.environ.get("mongodb_raw_cluster")
     )
 
-    logger.info("Obtaining soccer matches data from source database")
+    collector_logger.info("Obtaining soccer matches data from source database")
     soccer_matches_df = collector_engine.get_data()
 
-    logger.info("Obtaining target database")
+    collector_logger.info("Obtaining target database")
     mongodb_client = collector_engine.get_target_database()
 
-    logger.info(f"Filtering {len(soccer_matches_df)} soccer matches")
+    collector_logger.info(f"Filtering {len(soccer_matches_df)} soccer matches")
     filtered_soccer_matches_df = collector_engine.filter_data(
         soccer_matches_df,
         config["SEASON_FILTER"]["season_column"],
@@ -63,7 +65,9 @@ if __name__ == "__main__":
         config["RAW_FEATURES_TARGETS"]["raw_targets"]
     )
 
-    logger.info(f"Modelling {len(filtered_soccer_matches_df)} soccer matches")
+    collector_logger.info(
+        f"Modelling {len(filtered_soccer_matches_df)} soccer matches"
+    )
     modeled_soccer_matches = collector_engine.model_matches_data(
         filtered_soccer_matches_df,
         match_features + match_targets,
@@ -72,15 +76,17 @@ if __name__ == "__main__":
 
     raw_data_collection_name = os.environ.get("mongodb_raw_collection")
 
-    logger.info("Checking if raw_data_collection already exists")
+    collector_logger.info("Checking if raw_data_collection already exists")
     if mongodb_client[raw_data_collection_name] is not None:
-        logger.info("Collection already exists -> Collection to be droped")
+        collector_logger.info(
+            "Collection already exists -> Collection to be droped"
+        )
         mongodb_client[raw_data_collection_name].drop()
 
-    logger.info("Creating raw_data_collection in target database")
+    collector_logger.info("Creating raw_data_collection in target database")
     raw_data_collection = mongodb_client[raw_data_collection_name]
 
-    logger.info(
+    collector_logger.info(
         f"Inserting {len(modeled_soccer_matches)} "
         "soccer matches in target database"
     )
@@ -89,4 +95,6 @@ if __name__ == "__main__":
             raw_data_collection, modeled_soccer_match
         )
 
-    logger.info("All matches inserted in target database successfully")
+    collector_logger.info(
+        "All matches inserted in target database successfully"
+    )
