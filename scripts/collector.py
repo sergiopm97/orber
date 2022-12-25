@@ -1,6 +1,5 @@
 import ast
 import configparser
-import logging
 import os
 import ssl
 import sys
@@ -8,20 +7,20 @@ import sys
 from dotenv import load_dotenv
 
 from engines.collector_engine import CollectorEngine
-from utils.logger import Logger
+from utils.logger.configs import logging_configs
+from utils.logger.logger import Logger
 
 
 if __name__ == "__main__":
 
-    logger_name = "Collector engine"
+    logger_config = logging_configs["collector_engine"]
 
-    logging_format = logging.Formatter(
-        "[%(asctime)s] - %(levelname)s - %(message)s"
+    logger = Logger(
+        logger_config["logger_name"],
+        logger_config["logging_format"],
+        logger_config["logging_level"]
     )
 
-    logging_level = logging.INFO
-
-    logger = Logger(logger_name, logging_format, logging_level)
     collector_logger = logger.create_logger()
 
     config = configparser.ConfigParser()
