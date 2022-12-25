@@ -79,6 +79,7 @@ class CollectorEngine:
     def model_matches_data(
         soccer_matches: pd.DataFrame,
         features_targets: list,
+        date_column: str
     ) -> List[RawSoccerMatch]:
         """
         Extract all soccer matches from the DataFrame and
@@ -106,8 +107,8 @@ class CollectorEngine:
         )
 
         for soccer_match in matches_features_targes_dict:
-            soccer_match["date"] = datetime.strptime(
-                soccer_match["date"], "%Y-%m-%d"
+            soccer_match[date_column] = datetime.strptime(
+                soccer_match[date_column], "%Y-%m-%d"
             )
 
         modeled_soccer_matches = list()

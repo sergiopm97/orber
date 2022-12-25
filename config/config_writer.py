@@ -34,5 +34,9 @@ if __name__ == "__main__":
         "raw_targets": ["score1", "score2"]
     }
 
+    config["DATE_COLUMN"] = {
+        "name": "date"
+    }
+
     with open("config/config.ini", "w") as config_file:
         config.write(config_file)
