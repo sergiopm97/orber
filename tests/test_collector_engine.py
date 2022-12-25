@@ -1,3 +1,4 @@
+import ast
 import configparser
 import os
 import sys
@@ -9,6 +10,7 @@ from dotenv import load_dotenv
 from pymongo import MongoClient
 
 from engines.collector_engine import CollectorEngine
+from models.raw_soccer_match import RawSoccerMatch
 
 
 @pytest.fixture
@@ -34,6 +36,27 @@ def collector_engine(
 @pytest.fixture
 def soccer_matches_sample() -> pd.DataFrame:
     return pd.read_csv("tests/samples/soccer_matches_sample.csv")
+
+
+@pytest.fixture
+def modeled_soccer_matches(
+    config: configparser.ConfigParser,
+    soccer_matches_sample: pd.DataFrame,
+    collector_engine: CollectorEngine
+) -> pd.DataFrame:
+    match_features = ast.literal_eval(
+        config["RAW_FEATURES_TARGETS"]["raw_features"]
+    )
+
+    match_targets = ast.literal_eval(
+        config["RAW_FEATURES_TARGETS"]["raw_targets"]
+    )
+
+    return collector_engine.model_matches_data(
+        soccer_matches_sample,
+        match_features + match_targets,
+        config["DATE_COLUMN"]["name"]
+    )
 
 
 @pytest.mark.skipif(
@@ -72,3 +95,22 @@ def test_filter_data(
     ].value_counts().sort_values(ascending=False)
 
     assert unique_season_values.index.to_list() == season_range_test
+
+
+def test_model_matches_data_no_nan(
+    modeled_soccer_matches: pd.DataFrame
+):
+    modeled_soccer_matches_df = pd.DataFrame(
+        [modeled_soccer_match.dict()
+         for modeled_soccer_match in modeled_soccer_matches
+         ]
+    )
+
+    assert modeled_soccer_matches_df.isna().sum().sum() == 0
+
+
+def test_model_matches_data_types(
+    modeled_soccer_matches: pd.DataFrame
+):
+    for modeled_soccer_match in modeled_soccer_matches:
+        assert isinstance(modeled_soccer_match, RawSoccerMatch)
