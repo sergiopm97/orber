@@ -26,4 +26,4 @@ if __name__ == "__main__":
     )
 
     etl_logger.info("Downloading soccer matches data")
-    soccer_matches_data = etl_engine.get_data()
+    soccer_matches_df = etl_engine.get_data()
