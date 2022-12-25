@@ -5,6 +5,7 @@ env:
   mongodb_password: ${{ secrets.MONGODB_PASSWORD }}
   mongodb_connection: ${{ secrets.MONGODB_CONNECTION }}
   mongodb_raw_cluster: ${{ secrets.MONGODB_RAW_CLUSTER }}
+  mongodb_raw_collection: ${{ secrets.MONGODB_RAW_COLLECTION }}
 
 on:
   push:

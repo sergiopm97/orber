@@ -70,13 +70,15 @@ if __name__ == "__main__":
         config["DATE_COLUMN"]["name"]
     )
 
+    raw_data_collection_name = os.environ.get("mongodb_raw_collection")
+
     logger.info("Checking if raw_data_collection already exists")
-    if mongodb_client["raw_data_collection"] is not None:
+    if mongodb_client[raw_data_collection_name] is not None:
         logger.info("Collection already exists -> Collection to be droped")
-        mongodb_client["raw_data_collection"].drop()
+        mongodb_client[raw_data_collection_name].drop()
 
     logger.info("Creating raw_data_collection in target database")
-    raw_data_collection = mongodb_client["raw_data_collection"]
+    raw_data_collection = mongodb_client[raw_data_collection_name]
 
     logger.info(
         f"Inserting {len(modeled_soccer_matches)} "
