@@ -25,7 +25,6 @@ class CollectorEngine:
         Obtain historical soccer match data
         from FiveThirtyEight's origin database
 
-
         Returns:
             pd.DataFrame:
                 DataFrame with historical
