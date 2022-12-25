@@ -7,5 +7,12 @@ logging_configs = {
             "[%(asctime)s] - %(levelname)s - %(message)s"
         ),
         "logging_level": logging.INFO,
+    },
+    "etl_engine": {
+        "logger_name": "ETL engine",
+        "logging_format": logging.Formatter(
+            "[%(asctime)s] - %(levelname)s - %(message)s"
+        ),
+        "logging_level": logging.INFO,
     }
 }
