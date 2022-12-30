@@ -1,11 +1,23 @@
 import os
 
 from engines.etl_engine import ETLEngine
+from exceptions.etl_script import ModeNotSpecified, NotValidMode
+from utils.etl_script.parser import get_args
 from utils.logger.configs import logging_configs
 from utils.logger.logger import Logger
 
 
 if __name__ == "__main__":
+
+    args = get_args()
+
+    if args.mode is None:
+        raise ModeNotSpecified("ETL mode must be specified")
+
+    elif args.mode not in ["training", "predicting"]:
+        raise NotValidMode(
+            "Invalid mode given. Choose between training and predicting"
+        )
 
     logger_config = logging_configs["etl_engine"]
 
@@ -25,5 +37,11 @@ if __name__ == "__main__":
         os.environ.get("mongodb_raw_collection")
     )
 
-    etl_logger.info("Downloading soccer matches data")
-    soccer_matches_df = etl_engine.get_data()
+    if args.mode == "training":
+        etl_logger.info("Execution mode: training")
+
+        etl_logger.info("Downloading soccer matches data")
+        soccer_matches_df = etl_engine.get_data()
+
+    else:
+        etl_logger.info("Execution mode: predicting")
