@@ -1,8 +1,6 @@
 import ast
 import configparser
 import os
-import sys
-from urllib.error import URLError
 
 import pandas as pd
 import pytest
@@ -57,15 +55,6 @@ def modeled_soccer_matches(
         match_features + match_targets,
         config["DATE_COLUMN"]["name"]
     )
-
-
-@pytest.mark.skipif(
-    sys.platform != "darwin",
-    reason="The error is only raised on Mac OS X machines"
-)
-def test_get_data_ssl_error(collector_engine: CollectorEngine):
-    with pytest.raises(URLError):
-        collector_engine.get_data()
 
 
 def test_get_target_database(collector_engine: CollectorEngine):
