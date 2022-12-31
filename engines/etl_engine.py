@@ -37,3 +37,33 @@ class ETLEngine:
         return pd.DataFrame(
             [soccer_match for soccer_match in raw_data_collection.find({})]
         ).drop("_id", axis=1)
+
+    @staticmethod
+    def extract_match_winner(
+        home_score: int,
+        away_score: int
+    ) -> int:
+        """
+        Obtain the winner of the soccer match comparing
+        the goals scored by the home and the away teams
+
+        Args:
+            home_score (int):
+                The number of goals
+                scored by the home team
+
+            away_score (int):
+                The number of goals
+                scored by the away team
+
+        Returns:
+            int:
+                0 if the home team is the winner of the
+                match and 1 if the match ended being
+                a draw or a win for the away team
+        """
+
+        if home_score > away_score:
+            return 0
+
+        return 1

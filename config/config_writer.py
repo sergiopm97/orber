@@ -38,5 +38,14 @@ if __name__ == "__main__":
         "name": "date"
     }
 
+    config["NEW_TARGETS"] = {
+        "match_winner": "winner"
+    }
+
+    config["SCORES"] = {
+        "home_score": "score1",
+        "away_score": "score2"
+    }
+
     with open("config/config.ini", "w") as config_file:
         config.write(config_file)
