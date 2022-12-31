@@ -12,13 +12,6 @@ from models.raw_soccer_match import RawSoccerMatch
 
 
 @pytest.fixture
-def config() -> configparser.ConfigParser:
-    config = configparser.ConfigParser()
-    config.read("config/config.ini")
-    return config
-
-
-@pytest.fixture
 def collector_engine(
     config: configparser.ConfigParser
 ) -> CollectorEngine:
@@ -29,11 +22,6 @@ def collector_engine(
         os.environ.get("mongodb_connection"),
         os.environ.get("mongodb_raw_cluster")
     )
-
-
-@pytest.fixture
-def soccer_matches_sample() -> pd.DataFrame:
-    return pd.read_csv("tests/samples/soccer_matches_sample.csv")
 
 
 @pytest.fixture
