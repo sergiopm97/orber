@@ -1,23 +1,17 @@
 import os
 
 from engines.etl_engine import ETLEngine
-from exceptions.etl_script import ModeNotSpecified, NotValidMode
-from utils.etl_script.parser import get_args
+from utils.etl_script.parser import get_parser, validate_args
 from utils.logger.configs import logging_configs
 from utils.logger.logger import Logger
 
 
 if __name__ == "__main__":
 
-    args = get_args()
+    parser = get_parser()
 
-    if args.mode is None:
-        raise ModeNotSpecified("ETL mode must be specified")
-
-    elif args.mode not in ["training", "predicting"]:
-        raise NotValidMode(
-            "Invalid mode given. Choose between training and predicting"
-        )
+    args = parser.parse_args()
+    validate_args(args)
 
     logger_config = logging_configs["etl_engine"]
 

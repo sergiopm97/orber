@@ -1,15 +1,17 @@
 import argparse
 
+from exceptions.etl_script import ModeNotSpecified, NotValidMode
 
-def get_args() -> argparse.Namespace:
+
+def get_parser() -> argparse.ArgumentParser:
     """
-    Define the parser and collect the
-    arguments provided in the ETL run
+    Define and create the parser as well
+    as its arguments and parser conditions
 
     Returns:
-        argparse.Namespace:
-            Namespace which contains the
-            arguments passed in ETL execution
+        argparse.ArgumentParser:
+            ETL run-based parser ready to
+            collect arguments passed in execution
     """
 
     parser = argparse.ArgumentParser(
@@ -23,4 +25,35 @@ def get_args() -> argparse.Namespace:
         help="Select the ETL execution mode",
     )
 
-    return parser.parse_args()
+    return parser
+
+
+def validate_args(
+    args: argparse.Namespace
+):
+    """
+    Validate that the arguments passed
+    in the ETL execution are valid
+
+    Args:
+        args (argparse.Namespace):
+            Arguments passed in
+            the ETL execution
+
+    Raises:
+        ModeNotSpecified:
+            Exception that raises when the
+            ETL mode is not specified
+
+        NotValidMode:
+            Exception that raises when the
+            specified ETL mode is not valid
+    """
+
+    if args.mode is None:
+        raise ModeNotSpecified("ETL mode must be specified")
+
+    elif args.mode not in ["training", "predicting"]:
+        raise NotValidMode(
+            "Invalid mode given. Choose between training and predicting"
+        )
