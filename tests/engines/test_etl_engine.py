@@ -72,3 +72,26 @@ def test_soccer_matches_goals(
     generated_result = pd.DataFrame({"goals": generated_goals})
 
     pd.testing.assert_frame_equal(expected_result, generated_result)
+
+
+def test_soccer_over_2_matches(
+    config: configparser.ConfigParser,
+    etl_engine: ETLEngine,
+    soccer_matches_sample: pd.DataFrame
+):
+    expected_over_2_matches = [1, 1, 1, 0, 1, 0, 1, 1, 0]
+    expected_result = pd.DataFrame({"over2": expected_over_2_matches})
+
+    home_score_column = config["SCORES"]["home_score"]
+    away_score_column = config["SCORES"]["away_score"]
+
+    generated_over_2_matches = soccer_matches_sample.apply(
+        lambda x: etl_engine.extract_over_two_goals(
+            x[home_score_column], x[away_score_column],
+        ),
+        axis=1
+    )
+
+    generated_result = pd.DataFrame({"over2": generated_over_2_matches})
+
+    pd.testing.assert_frame_equal(expected_result, generated_result)

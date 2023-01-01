@@ -69,6 +69,38 @@ class ETLEngine:
         return 1
 
     @staticmethod
+    def extract_over_two_goals(
+        home_score: int,
+        away_score: int
+    ) -> int:
+        """
+        Define if the total number of goals scored
+        between the two teams is higher than 2 goals
+
+        Args:
+            home_score (int):
+                The number of goals
+                scored by the home team
+
+            away_score (int):
+                The number of goals
+                scored by the away team
+
+        Returns:
+            int:
+                0 if the total number of goals of
+                the match is equal or less than
+                2 and 1 if it is higher than 2
+        """
+
+        match_goals = home_score + away_score
+
+        if match_goals <= 2:
+            return 0
+
+        return 1
+
+    @staticmethod
     def extract_match_goals(
         home_score: int,
         away_score: int

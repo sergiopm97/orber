@@ -40,7 +40,8 @@ if __name__ == "__main__":
 
     config["NEW_TARGETS"] = {
         "match_winner": "winner",
-        "match_goals": "goals"
+        "match_goals": "goals",
+        "over_2_goals": "over2"
     }
 
     config["SCORES"] = {

@@ -62,5 +62,13 @@ if __name__ == "__main__":
                 x[home_score_column], x[away_score_column]), axis=1
         )
 
+        over_2_goals_column = config["NEW_TARGETS"]["over_2_goals"]
+
+        etl_logger.info("Creating the column with over 2 goals matches")
+        soccer_matches_df[over_2_goals_column] = soccer_matches_df.apply(
+            lambda x: etl_engine.extract_over_two_goals(
+                x[home_score_column], x[away_score_column]), axis=1
+        )
+
     else:
         etl_logger.info("Execution mode: predicting")
