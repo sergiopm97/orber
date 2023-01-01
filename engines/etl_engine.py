@@ -69,6 +69,32 @@ class ETLEngine:
         return 1
 
     @staticmethod
+    def extract_match_goals(
+        home_score: int,
+        away_score: int
+    ) -> int:
+        """
+        Obtain the total number of goals of a match
+        adding the home goals and the away goals
+
+        Args:
+            home_score (int):
+                The number of goals
+                scored by the home team
+
+            away_score (int):
+                The number of goals
+                scored by the away team
+
+        Returns:
+            int:
+                Total number of goals that
+                have been scored in the match
+        """
+
+        return home_score + away_score
+
+    @staticmethod
     def extract_over_two_goals(
         home_score: int,
         away_score: int
@@ -101,13 +127,13 @@ class ETLEngine:
         return 1
 
     @staticmethod
-    def extract_match_goals(
+    def extract_both_teams_scored(
         home_score: int,
         away_score: int
     ) -> int:
         """
-        Obtain the total number of goals of a match
-        adding the home goals and the away goals
+        Define if each team of the soccer
+        match have scored at least 1 goal
 
         Args:
             home_score (int):
@@ -120,8 +146,12 @@ class ETLEngine:
 
         Returns:
             int:
-                Total number of goals that
-                have been scored in the match
+                0 if one of the teams has not scored
+                at least 1 goal and 1 if the two teams
+                have scored at least 1 goal each
         """
 
-        return home_score + away_score
+        if home_score == 0 or away_score == 0:
+            return 0
+
+        return 1
