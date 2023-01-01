@@ -67,3 +67,29 @@ class ETLEngine:
             return 0
 
         return 1
+
+    @staticmethod
+    def extract_match_goals(
+        home_score: int,
+        away_score: int
+    ) -> int:
+        """
+        Obtain the total number of goals of a match
+        adding the home goals and the away goals
+
+        Args:
+            home_score (int):
+                The number of goals
+                scored by the home team
+
+            away_score (int):
+                The number of goals
+                scored by the away team
+
+        Returns:
+            int:
+                Total number of goals that
+                have been scored in the match
+        """
+
+        return home_score + away_score

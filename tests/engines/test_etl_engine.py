@@ -33,14 +33,8 @@ def test_soccer_matches_winners(
     etl_engine: ETLEngine,
     soccer_matches_sample: pd.DataFrame
 ):
-    expected_result = pd.DataFrame(
-        {
-            "winner": [
-                0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0,
-                0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0
-            ]
-        }
-    )
+    expected_winners = [0, 1, 0, 1, 1, 1, 0, 1, 0]
+    expected_result = pd.DataFrame({"winner": expected_winners})
 
     home_score_column = config["SCORES"]["home_score"]
     away_score_column = config["SCORES"]["away_score"]
@@ -53,5 +47,28 @@ def test_soccer_matches_winners(
     )
 
     generated_result = pd.DataFrame({"winner": generated_winners})
+
+    pd.testing.assert_frame_equal(expected_result, generated_result)
+
+
+def test_soccer_matches_goals(
+    config: configparser.ConfigParser,
+    etl_engine: ETLEngine,
+    soccer_matches_sample: pd.DataFrame
+):
+    expected_goals = [4.0, 4.0, 6.0, 2.0, 3.0, 0.0, 5.0, 4.0, 2.0]
+    expected_result = pd.DataFrame({"goals": expected_goals})
+
+    home_score_column = config["SCORES"]["home_score"]
+    away_score_column = config["SCORES"]["away_score"]
+
+    generated_goals = soccer_matches_sample.apply(
+        lambda x: etl_engine.extract_match_goals(
+            x[home_score_column], x[away_score_column],
+        ),
+        axis=1
+    )
+
+    generated_result = pd.DataFrame({"goals": generated_goals})
 
     pd.testing.assert_frame_equal(expected_result, generated_result)

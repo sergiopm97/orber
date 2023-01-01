@@ -69,7 +69,7 @@ def test_filter_data(
 
     unique_season_values = filtered_soccer_matches[
         config["SEASON_FILTER"]["season_column"]
-    ].value_counts().sort_values(ascending=False)
+    ].value_counts().sort_index(ascending=True)
 
     assert unique_season_values.index.to_list() == season_range_test
 

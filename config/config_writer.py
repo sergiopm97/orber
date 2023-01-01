@@ -39,7 +39,8 @@ if __name__ == "__main__":
     }
 
     config["NEW_TARGETS"] = {
-        "match_winner": "winner"
+        "match_winner": "winner",
+        "match_goals": "goals"
     }
 
     config["SCORES"] = {

@@ -8,24 +8,3 @@ season,date,league_id,league,team1,team2,spi1,spi2,prob1,prob2,probtie,proj_scor
 2018,2018-12-16,2411,Barclays Premier League,Southampton,Arsenal,65.59,81.87,0.2419,0.5124,0.2457,1.21,1.85,42.3,63.9,3.0,2.0,1.26,1.11,1.04,1.44,3.15,2.1
 2017,2017-09-17,5641,Argentina Primera Division,San Martin San Juan,River Plate,38.73,57.13,0.2542,0.4636,0.2822,1.0,1.45,,,1.0,3.0,1.66,1.74,1.55,1.21,1.05,2.63
 2021,2022-02-07,1983,South African ABSA Premier League,Mamelodi Sundowns,Chippa United,31.73,10.22,0.6278,0.099,0.2731,1.55,0.44,,,2.0,0.0,,,,,,
-2020,2020-11-28,1832,Belgian Jupiler League,Cercle Brugge,Genk,36.06,54.86,0.2735,0.5001,0.2265,1.39,1.94,1.7,17.8,1.0,5.0,,,,,,
-2017,2017-09-16,1856,Italy Serie B,Virtus Entella,Ternana,26.47,32.14,0.3576,0.3397,0.3027,1.32,1.28,,,3.0,1.0,,,,,,
-2021,2021-12-13,1871,Spanish Segunda Division,Mirandes,Real Sociedad II,29.22,27.57,0.4183,0.2943,0.2874,1.4,1.13,46.3,52.7,2.0,0.0,1.33,0.35,0.73,1.09,1.62,0.0
-2018,2019-01-12,2414,English League Two,Port Vale,Colchester United,7.03,10.39,0.3402,0.3611,0.2987,1.09,1.14,13.3,14.5,0.0,3.0,,,,,,
-2022,2023-02-28,2413,English League One,Lincoln City,Milton Keynes Dons,20.65,21.86,0.4093,0.3014,0.2893,1.27,1.05,,,,,,,,,,
-2018,2018-06-23,2160,United Soccer League,Richmond Kickers,Charlotte Independence,13.33,24.39,0.3145,0.4302,0.2553,1.3,1.57,,,1.0,1.0,,,,,,
-2018,2019-03-10,1871,Spanish Segunda Division,Lugo,Reus Deportiu,20.59,21.75,0.4295,0.2496,0.3209,1.19,0.83,67.9,65.3,1.0,0.0,,,,,,
-2018,2019-02-04,1844,French Ligue 2,Lens,Beziers AS,31.3,14.88,0.5727,0.1322,0.2951,1.46,0.55,13.7,54.4,3.0,0.0,,,,,,
-2022,2022-11-12,1866,Russian Premier Liga,Krylia Sovetov,Rostov,42.17,48.73,0.3637,0.3857,0.2506,1.44,1.49,11.7,38.6,1.0,3.0,,,,,,
-2018,2019-03-17,1854,Italy Serie A,Genoa,Juventus,61.69,87.71,0.1619,0.616,0.2221,0.9,1.98,5.2,2.1,2.0,0.0,1.15,0.34,1.69,1.27,1.82,0.0
-2018,2018-05-16,2160,United Soccer League,Atlanta United 2,Toronto FC II,12.03,6.9,0.558,0.1918,0.2502,1.68,0.87,,,5.0,4.0,,,,,,
-2016,2016-12-17,1869,Spanish Primera Division,Atletico Madrid,Las Palmas,87.65,67.18,0.7398,0.0718,0.1884,2.11,0.37,72.8,17.1,1.0,0.0,1.1,0.56,1.72,0.89,1.05,0.0
-2016,2016-12-17,1845,German Bundesliga,FC Augsburg,Borussia Monchengladbach,65.36,69.97,0.3988,0.295,0.3063,1.04,0.85,33.7,11.7,1.0,0.0,0.4,0.5,0.79,0.38,1.05,0.0
-2020,2020-09-10,1874,Swedish Allsvenskan,IFK Goteborg,Hammarby,29.69,40.79,0.3449,0.4054,0.2496,1.52,1.66,31.0,1.1,0.0,4.0,,,,,,
-2018,2019-01-20,1871,Spanish Segunda Division,Extremadura UD,Real Oviedo,30.71,29.3,0.4899,0.244,0.2662,1.63,1.07,37.8,14.0,0.0,2.0,,,,,,
-2019,2019-11-02,2105,Brasileiro Série A,Fortaleza,Atletico Mineiro,45.11,52.67,0.4237,0.3283,0.248,1.51,1.3,26.6,15.2,2.0,2.0,0.64,0.59,0.89,0.72,2.1,2.1
-2018,2019-03-30,2413,English League One,Accrington Stanley,Fleetwood Town,16.58,25.7,0.3172,0.4056,0.2773,1.16,1.35,36.3,4.6,0.0,1.0,,,,,,
-2019,2019-11-02,1846,German 2. Bundesliga,Erzgebirge Aue,1. FC Heidenheim 1846,29.16,33.08,0.3696,0.3465,0.2839,1.38,1.33,18.0,18.7,1.0,1.0,0.4,1.08,1.01,1.61,1.05,1.05
-2021,2022-05-18,2414,English League Two,Northampton Town,Mansfield Town,13.55,15.76,0.4981,0.5019,0.0,1.24,1.24,100.0,100.0,0.0,1.0,,,,,,
-2020,2020-08-09,1874,Swedish Allsvenskan,Östersunds FK,IF Elfsborg,22.47,34.09,0.3078,0.4256,0.2666,1.26,1.53,41.3,7.9,0.0,1.0,,,,,,
-2017,2017-07-29,2105,Brasileiro Série A,Palmeiras,Avaí,56.73,37.59,0.6819,0.1048,0.2133,1.82,0.55,,,2.0,0.0,0.78,0.44,2.03,0.49,2.1,0.0

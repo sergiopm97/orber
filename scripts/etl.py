@@ -54,5 +54,13 @@ if __name__ == "__main__":
                 x[home_score_column], x[away_score_column]), axis=1
         )
 
+        goals_column = config["NEW_TARGETS"]["match_goals"]
+
+        etl_logger.info("Creating the column with the goals of the match")
+        soccer_matches_df[goals_column] = soccer_matches_df.apply(
+            lambda x: etl_engine.extract_match_goals(
+                x[home_score_column], x[away_score_column]), axis=1
+        )
+
     else:
         etl_logger.info("Execution mode: predicting")
