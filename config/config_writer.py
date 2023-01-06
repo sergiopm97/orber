@@ -50,5 +50,10 @@ if __name__ == "__main__":
         "away_score": "score2"
     }
 
+    config["TEAMS"] = {
+        "home_team": "team1",
+        "away_team": "team2"
+    }
+
     with open("config/config.ini", "w") as config_file:
         config.write(config_file)

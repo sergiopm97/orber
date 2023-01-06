@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from pymongo import MongoClient
 
@@ -155,3 +156,67 @@ class ETLEngine:
             return 0
 
         return 1
+
+    @staticmethod
+    def generate_moving_average(
+        soccer_matches: pd.DataFrame,
+        date_column: str,
+        reference_column: str,
+        value_column: str
+    ) -> pd.DataFrame:
+        """
+        Generate moving average of a numerical column
+        taking in account a reference column and a date
+        column where the window of the moving average is 6
+
+        Args:
+            soccer_matches (pd.DataFrame):
+                DataFrame that contains all the soccer
+                matches that are being processed in the ETL
+
+            date_column (str):
+                Value that defines the name of the column
+                date within the soccer matches DataFrame
+
+            reference_column (str):
+                Column that is going to be the reference
+                point to calculate the moving average
+
+            value_column (str):
+                Column to be used to extract
+                the value of the moving average
+
+        Returns:
+            pd.DataFrame:
+                Soccer matches DataFrame containing
+                the calculated moving average column
+        """
+
+        matches_selected_columns = soccer_matches[
+            [date_column, reference_column, value_column]
+        ]
+
+        mean_values = list()
+
+        for soccer_match in matches_selected_columns.to_dict(orient="records"):
+
+            reference_attr = soccer_match[reference_column]
+            date_attr = soccer_match[date_column]
+
+            filtered_soccer_matches = matches_selected_columns.loc[
+                (soccer_matches[reference_column].values == reference_attr)
+                & (soccer_matches[date_column].values < date_attr)
+            ].iloc[-6:]
+
+            if len(filtered_soccer_matches) < 6:
+                mean_values.append(np.nan)
+
+            else:
+                mean_values.append(
+                    np.mean(filtered_soccer_matches[value_column])
+                )
+
+        soccer_matches[reference_column + "_" + value_column
+                       + "_" + "mean_last_6"] = mean_values
+
+        return soccer_matches.dropna()

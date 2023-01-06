@@ -78,5 +78,12 @@ if __name__ == "__main__":
                 x[home_score_column], x[away_score_column]), axis=1
         )
 
+        soccer_matches_df = etl_engine.generate_moving_average(
+            soccer_matches_df,
+            config["DATE_COLUMN"]["name"],
+            config["TEAMS"]["home_team"],
+            config["TEAMS"]["away_team"]
+        )
+
     else:
         etl_logger.info("Execution mode: predicting")
