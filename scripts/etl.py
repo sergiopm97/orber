@@ -84,7 +84,8 @@ if __name__ == "__main__":
             soccer_matches_df,
             config["DATE_COLUMN"]["name"],
             config["TEAMS"]["home_team"],
-            config["SCORES"]["home_score"]
+            config["SCORES"]["home_score"],
+            config["NEW_FEATURES"]["home_scored_mean_6"]
         )
 
         etl_logger.info(
@@ -94,7 +95,8 @@ if __name__ == "__main__":
             soccer_matches_df,
             config["DATE_COLUMN"]["name"],
             config["TEAMS"]["home_team"],
-            config["SCORES"]["away_score"]
+            config["SCORES"]["away_score"],
+            config["NEW_FEATURES"]["home_conceded_mean_6"]
         )
 
         etl_logger.info("Generating moving average for away team scored goals")
@@ -102,7 +104,8 @@ if __name__ == "__main__":
             soccer_matches_df,
             config["DATE_COLUMN"]["name"],
             config["TEAMS"]["away_team"],
-            config["SCORES"]["away_score"]
+            config["SCORES"]["away_score"],
+            config["NEW_FEATURES"]["away_scored_mean_6"]
         )
 
         etl_logger.info(
@@ -112,7 +115,25 @@ if __name__ == "__main__":
             soccer_matches_df,
             config["DATE_COLUMN"]["name"],
             config["TEAMS"]["away_team"],
-            config["SCORES"]["home_score"]
+            config["SCORES"]["home_score"],
+            config["NEW_FEATURES"]["away_conceded_mean_6"]
+        )
+
+        final_features = ast.literal_eval(
+            config["RAW_FEATURES_TARGETS"]["raw_features"]
+        ) + \
+            list(config["NEW_FEATURES"].values())
+
+        final_targets = ast.literal_eval(
+            config["RAW_FEATURES_TARGETS"]["raw_targets"]
+        ) + \
+            list(config["NEW_TARGETS"].values())
+
+        etl_logger.info("Sorting the columns by features and targets")
+        soccer_matches_df = etl_engine.sort_features_targets(
+            soccer_matches_df,
+            final_features,
+            final_targets
         )
 
         useless_columns = ast.literal_eval(config["USELESS_COLUMNS"]["names"])
@@ -122,8 +143,6 @@ if __name__ == "__main__":
             soccer_matches_df,
             useless_columns
         )
-
-        print()
 
     elif args.mode == "training":
         etl_logger.info("Execution mode: training")

@@ -55,6 +55,13 @@ if __name__ == "__main__":
         "away_team": "team2"
     }
 
+    config["NEW_FEATURES"] = {
+        "home_scored_mean_6": "team1_score1_mean_last_6",
+        "home_conceded_mean_6": "team1_score2_mean_last_6",
+        "away_scored_mean_6": "team2_score2_mean_last_6",
+        "away_conceded_mean_6": "team2_score1_mean_last_6"
+    }
+
     config["USELESS_COLUMNS"] = {
         "names": [
             "date",

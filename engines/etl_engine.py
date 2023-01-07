@@ -163,7 +163,8 @@ class ETLEngine:
         soccer_matches: pd.DataFrame,
         date_column: str,
         reference_column: str,
-        value_column: str
+        value_column: str,
+        new_column: str
     ) -> pd.DataFrame:
         """
         Generate moving average of a numerical column
@@ -217,10 +218,40 @@ class ETLEngine:
                     np.round(np.mean(filtered_soccer_matches[value_column]), 2)
                 )
 
-        soccer_matches[reference_column + "_" + value_column
-                       + "_" + "mean_last_6"] = mean_values
+        soccer_matches[new_column] = mean_values
 
         return soccer_matches.dropna()
+
+    @staticmethod
+    def sort_features_targets(
+        soccer_matches: pd.DataFrame,
+        features: List[str],
+        targets: List[str],
+    ) -> pd.DataFrame:
+        """
+        Sort the columns of the soccer matches
+        DataFrame by features and targets
+
+        Args:
+            soccer_matches (pd.DataFrame):
+                DataFrame containing all
+                the soccer matches data
+
+            features (List[str]):
+                Original and generated features to
+                be in the beginning of the DataFrame
+
+            targets (List[str]):
+                Original and generated targets to
+                be in the end of the DataFrame
+
+        Returns:
+            pd.DataFrame:
+                Soccer matches DataFrame sorted
+                by the features and the targets
+        """
+
+        return soccer_matches[features + targets]
 
     @staticmethod
     def drop_useless_columns(

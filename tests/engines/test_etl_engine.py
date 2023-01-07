@@ -137,14 +137,15 @@ def test_moving_average(
     expected_moving_average = [1.33, 1.17, 1.17, 0.83, 0.83, 1.00]
 
     expected_result = pd.DataFrame(
-        {"team1_score1_mean_last_6": expected_moving_average}
+        {config["NEW_FEATURES"]["home_scored_mean_6"]: expected_moving_average}
     )
 
     generated_result = etl_engine.generate_moving_average(
         soccer_matches_sample_moving_avg,
         config["DATE_COLUMN"]["name"],
         config["TEAMS"]["home_team"],
-        config["SCORES"]["home_score"]
-    )[["team1_score1_mean_last_6"]].reset_index(drop=True)
+        config["SCORES"]["home_score"],
+        config["NEW_FEATURES"]["home_scored_mean_6"]
+    )[[config["NEW_FEATURES"]["home_scored_mean_6"]]].reset_index(drop=True)
 
     pd.testing.assert_frame_equal(expected_result, generated_result)
