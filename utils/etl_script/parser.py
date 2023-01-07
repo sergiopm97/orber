@@ -53,7 +53,8 @@ def validate_args(
     if args.mode is None:
         raise ModeNotSpecified("ETL mode must be specified")
 
-    elif args.mode not in ["training", "predicting"]:
+    elif args.mode not in ["transforming", "training", "predicting"]:
         raise NotValidMode(
-            "Invalid mode given. Choose between training and predicting"
+            "Invalid mode given. Choose between "
+            "transforming, training and predicting"
         )

@@ -55,5 +55,15 @@ if __name__ == "__main__":
         "away_team": "team2"
     }
 
+    config["USELESS_COLUMNS"] = {
+        "names": [
+            "date",
+            "season",
+            "league",
+            "team1",
+            "team2"
+        ]
+    }
+
     with open("config/config.ini", "w") as config_file:
         config.write(config_file)

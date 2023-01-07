@@ -1,3 +1,4 @@
+import ast
 import configparser
 import os
 
@@ -35,8 +36,8 @@ if __name__ == "__main__":
         os.environ.get("mongodb_raw_collection")
     )
 
-    if args.mode == "training":
-        etl_logger.info("Execution mode: training")
+    if args.mode == "transforming":
+        etl_logger.info("Execution mode: transforming")
 
         etl_logger.info("Downloading soccer matches data")
         soccer_matches_df = etl_engine.get_data()
@@ -113,6 +114,19 @@ if __name__ == "__main__":
             config["TEAMS"]["away_team"],
             config["SCORES"]["home_score"]
         )
+
+        useless_columns = ast.literal_eval(config["USELESS_COLUMNS"]["names"])
+
+        etl_logger.info("Dropping useless columns after transforming")
+        soccer_matches_df = etl_engine.drop_useless_columns(
+            soccer_matches_df,
+            useless_columns
+        )
+
+        print()
+
+    elif args.mode == "training":
+        etl_logger.info("Execution mode: training")
 
     else:
         etl_logger.info("Execution mode: predicting")

@@ -1,3 +1,4 @@
+from typing import List
 import numpy as np
 import pandas as pd
 from pymongo import MongoClient
@@ -220,3 +221,30 @@ class ETLEngine:
                        + "_" + "mean_last_6"] = mean_values
 
         return soccer_matches.dropna()
+
+    @staticmethod
+    def drop_useless_columns(
+        soccer_matches: pd.DataFrame,
+        columns: List[str]
+    ) -> pd.DataFrame:
+        """
+        Drop columns that have been used
+        in the ETL process but are no longer
+        needed for anything else
+
+        Args:
+            soccer_matches (pd.DataFrame):
+                DataFrame with the final version of
+                the soccer matches data after the ETL
+
+            columns (List[str]):
+                Columns that are useless after the
+                ETL process and need to be dropped
+
+        Returns:
+            pd.DataFrame:
+                Final version of the DataFrame
+                containing the soccer matches data
+        """
+
+        return soccer_matches.drop(columns, axis=1)
