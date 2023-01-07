@@ -213,7 +213,7 @@ class ETLEngine:
 
             else:
                 mean_values.append(
-                    np.mean(filtered_soccer_matches[value_column])
+                    np.round(np.mean(filtered_soccer_matches[value_column]), 2)
                 )
 
         soccer_matches[reference_column + "_" + value_column

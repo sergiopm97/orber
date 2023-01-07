@@ -24,6 +24,11 @@ def cluster_soccer_matches_df(etl_engine: ETLEngine) -> pd.DataFrame:
     return etl_engine.get_data()
 
 
+@pytest.fixture
+def soccer_matches_sample_moving_avg() -> pd.DataFrame:
+    return pd.read_csv("tests/samples/soccer_matches_sample_moving_avg.csv")
+
+
 def test_cluster_not_empty(cluster_soccer_matches_df: pd.DataFrame):
     assert not cluster_soccer_matches_df.empty
 
@@ -120,5 +125,26 @@ def test_soccer_both_teams_scored_matches(
     generated_result = pd.DataFrame(
         {"btts": generated_both_teams_scored_matches}
     )
+
+    pd.testing.assert_frame_equal(expected_result, generated_result)
+
+
+def test_moving_average(
+        config: configparser.ConfigParser,
+        etl_engine: ETLEngine,
+        soccer_matches_sample_moving_avg: pd.DataFrame,
+):
+    expected_moving_average = [1.33, 1.17, 1.17, 0.83, 0.83, 1.00]
+
+    expected_result = pd.DataFrame(
+        {"team1_score1_mean_last_6": expected_moving_average}
+    )
+
+    generated_result = etl_engine.generate_moving_average(
+        soccer_matches_sample_moving_avg,
+        config["DATE_COLUMN"]["name"],
+        config["TEAMS"]["home_team"],
+        config["SCORES"]["home_score"]
+    )[["team1_score1_mean_last_6"]].reset_index(drop=True)
 
     pd.testing.assert_frame_equal(expected_result, generated_result)

@@ -1,0 +1,13 @@
+date,season,league,team1,team2,spi1,spi2,prob1,prob2,probtie,proj_score1,proj_score2,score1,score2,winner,goals,over2,btts
+2022-01-21,2021,Spanish Segunda Division,Tenerife,Real Oviedo,33.87,35.7,0.3854,0.2767,0.3378,1,0,4,0,0,4,1,0
+2022-02-06,2021,Spanish Segunda Division,Tenerife,Leganes,36.71,33.85,0.4712,0.2172,0.3115,1,0,0,0,1,0,0,0
+2022-02-19,2021,Spanish Segunda Division,Tenerife,UD Ibiza,37.0,30.79,0.5315,0.1884,0.2802,1,0,2,0,0,2,0,0
+2022-03-05,2021,Spanish Segunda Division,Tenerife,Real Valladolid,36.37,46.41,0.3142,0.3938,0.292,1,1,1,4,1,5,1,1
+2022-03-21,2021,Spanish Segunda Division,Tenerife,Almeria,37.77,42.17,0.355,0.3432,0.3019,1,1,0,1,1,1,0,0
+2022-04-02,2021,Spanish Segunda Division,Tenerife,Real Zaragoza,35.99,30.51,0.4857,0.2095,0.3047,1,0,1,1,1,2,0,1
+2022-04-17,2021,Spanish Segunda Division,Tenerife,Fuenlabrada,34.47,22.84,0.5582,0.1668,0.275,1,0,3,1,0,4,1,1
+2022-04-22,2021,Spanish Segunda Division,Tenerife,SD Huesca,34.86,37.92,0.4007,0.2909,0.3084,1,1,0,0,1,0,0,0
+2022-05-15,2021,Spanish Segunda Division,Tenerife,Málaga,35.85,24.57,0.4742,0.2194,0.3063,1,0,0,2,1,2,0,0
+2022-05-29,2021,Spanish Segunda Division,Tenerife,FC Cartagena,33.54,34.33,0.4421,0.2736,0.2842,1,1,1,2,1,3,1,1
+2022-06-01,2021,Spanish Segunda Division,Tenerife,Las Palmas,33.52,36.96,0.3746,0.313,0.3124,1,1,1,0,0,1,0,0
+2022-06-19,2021,Spanish Segunda Division,Tenerife,Girona FC,34.74,39.94,0.3529,0.3222,0.3249,1,1,1,3,1,4,1,1
