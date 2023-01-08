@@ -6,6 +6,7 @@ import pytest
 from dotenv import load_dotenv
 
 from engines.etl_engine import ETLEngine
+from models.transformed_soccer_match import TransformedSoccerMatch
 
 
 @pytest.fixture
@@ -32,6 +33,11 @@ def soccer_matches_sample_moving_avg() -> pd.DataFrame:
     return pd.read_csv("tests/samples/soccer_matches_sample_moving_avg.csv")
 
 
+@pytest.fixture
+def transformed_soccer_matches_sample() -> pd.DataFrame:
+    return pd.read_csv("tests/samples/transformed_soccer_matches_sample.csv")
+
+
 def test_cluster_not_empty(cluster_soccer_matches_df: pd.DataFrame):
     assert not cluster_soccer_matches_df.empty
 
@@ -42,7 +48,9 @@ def test_soccer_matches_winners(
     soccer_matches_sample: pd.DataFrame
 ):
     expected_winners = [0, 1, 0, 1, 1, 1, 0, 1, 0]
-    expected_result = pd.DataFrame({"winner": expected_winners})
+    expected_result = pd.DataFrame(
+        {config["NEW_TARGETS"]["match_winner"]: expected_winners}
+    )
 
     home_score_column = config["SCORES"]["home_score"]
     away_score_column = config["SCORES"]["away_score"]
@@ -54,7 +62,9 @@ def test_soccer_matches_winners(
         axis=1
     )
 
-    generated_result = pd.DataFrame({"winner": generated_winners})
+    generated_result = pd.DataFrame(
+        {config["NEW_TARGETS"]["match_winner"]: generated_winners}
+    )
 
     pd.testing.assert_frame_equal(expected_result, generated_result)
 
@@ -65,7 +75,9 @@ def test_soccer_matches_goals(
     soccer_matches_sample: pd.DataFrame
 ):
     expected_goals = [4.0, 4.0, 6.0, 2.0, 3.0, 0.0, 5.0, 4.0, 2.0]
-    expected_result = pd.DataFrame({"goals": expected_goals})
+    expected_result = pd.DataFrame(
+        {config["NEW_TARGETS"]["match_goals"]: expected_goals}
+    )
 
     home_score_column = config["SCORES"]["home_score"]
     away_score_column = config["SCORES"]["away_score"]
@@ -77,7 +89,9 @@ def test_soccer_matches_goals(
         axis=1
     )
 
-    generated_result = pd.DataFrame({"goals": generated_goals})
+    generated_result = pd.DataFrame(
+        {config["NEW_TARGETS"]["match_goals"]: generated_goals}
+    )
 
     pd.testing.assert_frame_equal(expected_result, generated_result)
 
@@ -88,7 +102,11 @@ def test_soccer_over_2_matches(
     soccer_matches_sample: pd.DataFrame
 ):
     expected_over_2_matches = [1, 1, 1, 0, 1, 0, 1, 1, 0]
-    expected_result = pd.DataFrame({"over2": expected_over_2_matches})
+    expected_result = pd.DataFrame(
+        {
+            config["NEW_TARGETS"]["over_2_goals"]: expected_over_2_matches
+        }
+    )
 
     home_score_column = config["SCORES"]["home_score"]
     away_score_column = config["SCORES"]["away_score"]
@@ -100,7 +118,9 @@ def test_soccer_over_2_matches(
         axis=1
     )
 
-    generated_result = pd.DataFrame({"over2": generated_over_2_matches})
+    generated_result = pd.DataFrame(
+        {config["NEW_TARGETS"]["over_2_goals"]: generated_over_2_matches}
+    )
 
     pd.testing.assert_frame_equal(expected_result, generated_result)
 
@@ -112,7 +132,10 @@ def test_soccer_both_teams_scored_matches(
 ):
     expected_both_teams_scored_matches = [1, 1, 1, 0, 0, 0, 1, 1, 0]
     expected_result = pd.DataFrame(
-        {"btts": expected_both_teams_scored_matches}
+        {
+            config["NEW_TARGETS"]["both_teams_scored"]:
+            expected_both_teams_scored_matches
+        }
     )
 
     home_score_column = config["SCORES"]["home_score"]
@@ -126,7 +149,10 @@ def test_soccer_both_teams_scored_matches(
     )
 
     generated_result = pd.DataFrame(
-        {"btts": generated_both_teams_scored_matches}
+        {
+            config["NEW_TARGETS"]["both_teams_scored"]:
+            generated_both_teams_scored_matches
+        }
     )
 
     pd.testing.assert_frame_equal(expected_result, generated_result)
@@ -152,3 +178,48 @@ def test_moving_average(
     )[[config["NEW_FEATURES"]["home_scored_mean_6"]]].reset_index(drop=True)
 
     pd.testing.assert_frame_equal(expected_result, generated_result)
+
+
+def test_sort_columns(
+    etl_engine: ETLEngine,
+    soccer_matches_sample: pd.DataFrame
+):
+    soccer_matches_columns = soccer_matches_sample.columns.to_list()
+
+    fake_features = soccer_matches_columns[0:2]
+    fake_targets = soccer_matches_columns[4:6]
+
+    sorted_soccer_matches = etl_engine.sort_features_targets(
+        soccer_matches_sample, fake_features, fake_targets
+    )
+
+    soccer_sorted_matches_columns = sorted_soccer_matches.columns.to_list()
+
+    assert (fake_features + fake_targets) == soccer_sorted_matches_columns
+
+
+def test_drop_useless_columns(
+    etl_engine: ETLEngine,
+    soccer_matches_sample: pd.DataFrame
+):
+    useless_columns = soccer_matches_sample.columns.to_list()[0:4]
+
+    soccer_matches_final_columns = etl_engine.drop_useless_columns(
+        soccer_matches_sample, useless_columns
+    )
+
+    final_columns = soccer_matches_final_columns.columns.to_list()
+
+    assert useless_columns not in final_columns
+
+
+def test_model_transformed_matches_data_types(
+    etl_engine: ETLEngine,
+    transformed_soccer_matches_sample: pd.DataFrame
+):
+    modeled_soccer_matches = etl_engine.model_matches_data(
+        transformed_soccer_matches_sample
+    )
+
+    for modeled_soccer_match in modeled_soccer_matches:
+        assert isinstance(modeled_soccer_match, TransformedSoccerMatch)
