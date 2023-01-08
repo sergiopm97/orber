@@ -33,7 +33,10 @@ if __name__ == "__main__":
     etl_engine = ETLEngine(
         os.environ.get("mongodb_connection"),
         os.environ.get("mongodb_raw_cluster"),
-        os.environ.get("mongodb_raw_collection")
+        os.environ.get("mongodb_raw_collection"),
+        os.environ.get("mongodb_connection_2"),
+        os.environ.get("mongodb_transformed_cluster"),
+        os.environ.get("mongodb_transformed_collection"),
     )
 
     if args.mode == "transforming":
@@ -142,6 +145,11 @@ if __name__ == "__main__":
         soccer_matches_df = etl_engine.drop_useless_columns(
             soccer_matches_df,
             useless_columns
+        )
+
+        etl_logger.info(f"Modelling {len(soccer_matches_df)} soccer matches")
+        modeled_soccer_matches = etl_engine.model_matches_data(
+            soccer_matches_df
         )
 
     elif args.mode == "training":

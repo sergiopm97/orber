@@ -1,16 +1,25 @@
 from typing import List
+
 import numpy as np
 import pandas as pd
 from pymongo import MongoClient
+
+from models.transformed_soccer_match import TransformedSoccerMatch
 
 
 class ETLEngine:
     def __init__(
         self,
+        origin_database_url: str,
+        origin_database_cluster: str,
+        origin_database_collection: str,
         target_database_url: str,
         target_database_cluster: str,
         target_database_collection: str
     ):
+        self.origin_database_url = origin_database_url
+        self.origin_database_cluster = origin_database_cluster
+        self.origin_database_collection = origin_database_collection
         self.target_database_url = target_database_url
         self.target_database_cluster = target_database_cluster
         self.target_database_collection = target_database_collection
@@ -18,7 +27,7 @@ class ETLEngine:
     def get_data(self) -> pd.DataFrame:
         """
         Download soccer matches
-        data from target database
+        data from origin database
 
         Returns:
             pd.DataFrame:
@@ -28,13 +37,13 @@ class ETLEngine:
         """
 
         mongodb_client = MongoClient(
-            self.target_database_url,
+            self.origin_database_url,
             tls=True,
             tlsAllowInvalidCertificates=True
         )
 
-        raw_cluster = mongodb_client[self.target_database_cluster]
-        raw_data_collection = raw_cluster[self.target_database_collection]
+        raw_cluster = mongodb_client[self.origin_database_cluster]
+        raw_data_collection = raw_cluster[self.origin_database_collection]
 
         return pd.DataFrame(
             [soccer_match for soccer_match in raw_data_collection.find({})]
@@ -279,3 +288,34 @@ class ETLEngine:
         """
 
         return soccer_matches.drop(columns, axis=1)
+
+    @staticmethod
+    def model_matches_data(
+        soccer_matches: pd.DataFrame,
+    ) -> List[TransformedSoccerMatch]:
+        """
+        Extract all soccer matches from the DataFrame and
+        convert each of them to the TransformedSoccerMatch model
+
+        Args:
+            soccer_matches (pd.DataFrame):
+                DataFrame with all the soccer matches
+                data transformed after the ETL process
+
+        Returns:
+            List[TransformedSoccerMatch]:
+                List of all transformed soccer matches data
+                modeled by the TransformedSoccerMatch class
+        """
+
+        soccer_matches_dict = soccer_matches.to_dict(
+            orient="records"
+        )
+
+        modeled_soccer_matches = list()
+
+        for soccer_match in soccer_matches_dict:
+            modeled_soccer_match = TransformedSoccerMatch(**soccer_match)
+            modeled_soccer_matches.append(modeled_soccer_match)
+
+        return modeled_soccer_matches

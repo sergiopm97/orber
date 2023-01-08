@@ -15,7 +15,10 @@ def etl_engine() -> ETLEngine:
     return ETLEngine(
         os.environ.get("mongodb_connection"),
         os.environ.get("mongodb_raw_cluster"),
-        os.environ.get("mongodb_raw_collection")
+        os.environ.get("mongodb_raw_collection"),
+        os.environ.get("mongodb_connection_2"),
+        os.environ.get("mongodb_transformed_cluster"),
+        os.environ.get("mongodb_transformed_collection"),
     )
 
 
