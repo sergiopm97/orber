@@ -1,6 +1,6 @@
 -r requirements-test.txt
 attrs==22.1.0
-autopep8==2.0.0
+autopep8==2.0.1
 dnspython==2.2.1
 iniconfig==1.1.1
 mccabe==0.7.0
