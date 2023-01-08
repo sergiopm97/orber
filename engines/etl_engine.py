@@ -1,8 +1,9 @@
-from typing import List
+from typing import Callable, Dict, List
 
 import numpy as np
 import pandas as pd
 from pymongo import MongoClient
+from pymongo.results import InsertManyResult
 
 from models.transformed_soccer_match import TransformedSoccerMatch
 
@@ -319,3 +320,44 @@ class ETLEngine:
             modeled_soccer_matches.append(modeled_soccer_match)
 
         return modeled_soccer_matches
+
+    def insert_transformed_matches(
+        self,
+        soccer_matches: List[TransformedSoccerMatch]
+    ) -> Callable[[Dict[str, any]], InsertManyResult]:
+        """
+        Insert the transformed soccer
+        matches data in the target database
+
+        Args:
+            soccer_matches (List[TransformedSoccerMatch]):
+                Transformed soccer matches data that are
+                ready to be called and inserted
+                in the target database
+
+        Returns:
+            Callable[[Dict[str, any]], InsertManyResult]:
+                Insertion of all matches data into the collection accepting
+                the data in dictionary form and returning
+                a default result from MongoDB
+        """
+
+        mongodb_client = MongoClient(
+            self.target_database_url,
+            tls=True,
+            tlsAllowInvalidCertificates=True
+        )
+
+        transformed_cluster = mongodb_client[self.target_database_cluster]
+
+        transformed_data_collection = transformed_cluster[
+            self.target_database_collection
+        ]
+
+        if transformed_data_collection is not None:
+            transformed_data_collection.drop()
+
+        soccer_matches_dicts = [soccer_match.dict()
+                                for soccer_match in soccer_matches]
+
+        return transformed_data_collection.insert_many(soccer_matches_dicts)

@@ -152,6 +152,11 @@ if __name__ == "__main__":
             soccer_matches_df
         )
 
+        etl_logger.info(
+            f"Inserting {len(modeled_soccer_matches)} in target database"
+        )
+        etl_engine.insert_transformed_matches(modeled_soccer_matches)
+
     elif args.mode == "training":
         etl_logger.info("Execution mode: training")
 
